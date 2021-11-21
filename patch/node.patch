@@ -19,3 +19,13 @@
      'src/js_native_api.h',
      'src/js_native_api_types.h',
      'src/node_api_types.h',
+--- a/node.gyp
++++ b/node.gyp
+@@ -720,6 +720,7 @@
+           'libraries': [
+             'Dbghelp',
+             'Psapi',
++            'winmm',
+             'Ws2_32',
+           ],
+         }],

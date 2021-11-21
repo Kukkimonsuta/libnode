@@ -14,6 +14,6 @@ add_executable(process_argv process_argv.cc)
 target_link_libraries(process_argv libnode)
 
 if(WIN32)
-	target_compile_options(simple PRIVATE "/MT")
-	target_compile_options(process_argv PRIVATE "/MT")
+	target_compile_options(simple PRIVATE "/MD")
+	target_compile_options(process_argv PRIVATE "/MD")
 endif()

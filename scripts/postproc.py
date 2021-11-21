@@ -24,13 +24,13 @@ def filterLibFile(filename):
     return 'gtest' not in filename and 'v8_nosnapshot' not in filename and 'v8_init' not in filename and 'icutools' not in filename
 
 if sys.platform == 'win32':
-    for libFile in os.scandir(nodeSrcFolder + '\\out\\Release\\lib'):
-        if libFile.is_file() and libFile.name.endswith('.lib') and filterLibFile(libFile.name):
+    for libFile in os.scandir(nodeSrcFolder + '\\out\\Release'):
+        if libFile.is_file() and libFile.name.endswith('.dll') and filterLibFile(libFile.name):
             print('Copying', libFile.name)
             shutil.copy(libFile.path, libFolder)
 elif sys.platform == 'darwin':
     for libFile in os.scandir(nodeSrcFolder + '/out/Release'):
-        if libFile.is_file() and libFile.name.endswith('.a') and filterLibFile(libFile.name):
+        if libFile.is_file() and libFile.name.endswith('.so') and filterLibFile(libFile.name):
             print('Copying', libFile.name)
             shutil.copy(libFile.path, libFolder)
             print('Striping', libFile.name)
@@ -38,7 +38,7 @@ elif sys.platform == 'darwin':
 elif sys.platform == 'linux':
     for dirname, _, basenames in os.walk(nodeSrcFolder + '/out/Release/obj.target'):
         for basename in basenames:
-            if basename.endswith('.a') and filterLibFile(basename):
+            if basename.endswith('.so') and filterLibFile(basename):
                 subprocess.run(
                     'ar -t {} | xargs ar rs {}'.format(
                         os.path.join(dirname, basename),
@@ -47,22 +47,22 @@ elif sys.platform == 'linux':
                     check=True, shell=True
                 )
 
-additional_obj_glob = nodeSrcFolder + '/out/Release/obj.target/node/gen/*.o'
-if sys.platform == 'win32':
-    additional_obj_glob = nodeSrcFolder + '/out/Release/obj/node_mksnapshot/src/*.obj'
+# additional_obj_glob = nodeSrcFolder + '/out/Release/obj.target/node/gen/*.o'
+# if sys.platform == 'win32':
+#     additional_obj_glob = nodeSrcFolder + '/out/Release/obj/node_mksnapshot/src/*.obj'
 
-if sys.platform == 'win32':
-    subprocess.check_call([
-            'lib', '/OUT:' + os.path.join(libFolder, "libnode_snapshot.lib")
-        ] + 
-        glob.glob(additional_obj_glob) + 
-        glob.glob(nodeSrcFolder + '/out/Release/obj/node_mksnapshot/tools/msvs/pch/*.obj')
-    )
-else:
-    subprocess.check_call([
-        'ar', 'cr', 
-        os.path.join(libFolder, "libnode_snapshot.a")
-    ] + glob.glob(additional_obj_glob))
+# if sys.platform == 'win32':
+#     subprocess.check_call([
+#             'lib', '/OUT:' + os.path.join(libFolder, "libnode_snapshot.lib")
+#         ] + 
+#         glob.glob(additional_obj_glob) + 
+#         glob.glob(nodeSrcFolder + '/out/Release/obj/node_mksnapshot/tools/msvs/pch/*.obj')
+#     )
+# else:
+#     subprocess.check_call([
+#         'ar', 'cr', 
+#         os.path.join(libFolder, "libnode_snapshot.a")
+#     ] + glob.glob(additional_obj_glob))
 
 shutil.copytree(os.path.join(nodeSrcFolder, 'include'), os.path.join(resultFolder, 'include'))
 shutil.copyfile('CMakeLists.txt', os.path.join(resultFolder, 'CMakeLists.txt'))
