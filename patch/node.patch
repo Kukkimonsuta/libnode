@@ -29,3 +29,31 @@
              'Ws2_32',
            ],
          }],
+--- a/node.gyp
++++ b/node.gyp
+@@ -255,6 +255,14 @@
+             'winmm.lib',
+             'Ws2_32.lib',
+           ],
++          'conditions': [
++            [ 'node_shared=="true"', { 
++              'dependencies!': [
++                'tools/v8_gypfiles/v8.gyp:v8_snapshot',
++                'tools/v8_gypfiles/v8.gyp:v8_libplatform',
++              ],
++            }],
++          ],
+         }],
+         ['node_with_ltcg=="true"', {
+           'msvs_settings': {
+--- a/node.gypi
++++ b/node.gypi
+@@ -29,7 +29,7 @@
+     [ 'clang==1', {
+       'cflags': [ '-Werror=undefined-inline', ]
+     }],
+-    [ 'node_shared=="false" and "<(_type)"=="executable"', {
++    [ '"<(_type)"=="executable"', {
+       'msvs_settings': {
+         'VCManifestTool': {
+           'EmbedManifest': 'true',

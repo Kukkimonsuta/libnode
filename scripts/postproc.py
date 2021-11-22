@@ -25,27 +25,29 @@ def filterLibFile(filename):
 
 if sys.platform == 'win32':
     for libFile in os.scandir(nodeSrcFolder + '\\out\\Release'):
-        if libFile.is_file() and libFile.name.endswith('.dll') and filterLibFile(libFile.name):
+        #if libFile.is_file() and libFile.name.endswith('.dll') and filterLibFile(libFile.name):
+        if libFile.is_file():
             print('Copying', libFile.name)
             shutil.copy(libFile.path, libFolder)
 elif sys.platform == 'darwin':
     for libFile in os.scandir(nodeSrcFolder + '/out/Release'):
-        if libFile.is_file() and libFile.name.endswith('.so') and filterLibFile(libFile.name):
+        #if libFile.is_file() and libFile.name.endswith('.so') and filterLibFile(libFile.name):
+        if libFile.is_file():
             print('Copying', libFile.name)
             shutil.copy(libFile.path, libFolder)
             print('Striping', libFile.name)
             subprocess.check_call(['strip', '-x', os.path.join(libFolder, libFile.name)])
 elif sys.platform == 'linux':
-    for dirname, _, basenames in os.walk(nodeSrcFolder + '/out/Release/obj.target'):
+    for dirname, _, basenames in os.walk(nodeSrcFolder + '/out/Release'):
         for basename in basenames:
-            if basename.endswith('.so') and filterLibFile(basename):
-                subprocess.run(
-                    'ar -t {} | xargs ar rs {}'.format(
-                        os.path.join(dirname, basename),
-                        os.path.join(libFolder, basename)
-                    ),
-                    check=True, shell=True
-                )
+            #if basename.endswith('.so') and filterLibFile(basename):
+            subprocess.run(
+                'ar -t {} | xargs ar rs {}'.format(
+                    os.path.join(dirname, basename),
+                    os.path.join(libFolder, basename)
+                ),
+                check=True, shell=True
+            )
 
 # additional_obj_glob = nodeSrcFolder + '/out/Release/obj.target/node/gen/*.o'
 # if sys.platform == 'win32':
