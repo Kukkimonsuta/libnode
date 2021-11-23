@@ -1,8 +1,8 @@
 # libnode 
 
-[![release.yml workflow status](https://github.com/patr0nus/libnode/workflows/Release/badge.svg)](https://github.com/patr0nus/libnode/actions/workflows/release.yml)
+[![release.yml workflow status](https://github.com/Kukkimonsuta/libnode/actions/workflows/release.yml/badge.svg)](https://github.com/Kukkimonsuta/libnode/actions/workflows/release.yml)
 
-This repo contains the scripts that build [Node.js](http://nodejs.org/) as a static library for embedding in [DeskGap](https://deskgap.com/).
+This repo contains the scripts that build [Node.js](http://nodejs.org/) as a shared library for embedding.
 
 ## Usage
 
@@ -10,18 +10,12 @@ This repo contains the scripts that build [Node.js](http://nodejs.org/) as a sta
 
 #### Specify the Node version:
 ```sh
-export LIBNODE_NODE_VERSION=v15.11.0
-```
-
-#### Remove `Intl` support to reduce the size (optional):
-```sh
-export LIBNODE_CONFIG_FLAGS=--without-intl
-export LIBNODE_ZIP_SUFFIX=-nointl
+export LIBNODE_VERSION=v17.1.0
 ```
 
 #### Build the x86 version (optional, Windows only):
 ```sh
-export LIBNODE_X86=1
+export LIBNODE_ARCHITECTURE=x86
 ```
 
 ### Downloading the source code of Node.js:

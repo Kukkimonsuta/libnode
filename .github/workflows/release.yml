@@ -3,12 +3,12 @@ name: Release
 on:
   workflow_dispatch:
     inputs:
-      nodeVersion:
+      version:
         description: "Node.js version"
         required: true
 
 env:
-  LIBNODE_NODE_VERSION: ${{ github.event.inputs.nodeVersion }}
+  LIBNODE_VERSION: ${{ github.event.inputs.version }}
 
 jobs:
   build:
@@ -16,15 +16,17 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-11, windows-2019, ubuntu-20.04]
-        x86: [0, 1]
+        architecture: [x86, x64]
+        configuration: [release, debug]
         exclude:
           - os: macos-11
-            x86: 1
+            architecture: x86
           - os: ubuntu-20.04
-            x86: 1
+            architecture: x86
     runs-on: ${{ matrix.os }}
     env:
-      LIBNODE_X86: ${{ matrix.x86 }}
+      LIBNODE_ARCHITECTURE: ${{ matrix.architecture }}
+      LIBNODE_CONFIGURATION: ${{ matrix.configuration }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -78,8 +80,8 @@ jobs:
           name: ${{ steps.archive.outputs.zipname }}
           path: ${{ steps.archive.outputs.zipname }}
 
-      - name: Test
-        run: python -m scripts.test
+      # - name: Test
+      #   run: python -m scripts.test
         
   gh_release:
     needs: build
@@ -102,8 +104,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ env.LIBNODE_NODE_VERSION }}
-          release_name: ${{ env.LIBNODE_NODE_VERSION }}
+          tag_name: ${{ env.LIBNODE_VERSION }}
+          release_name: ${{ env.LIBNODE_VERSION }}
           body_path: release_notes.md
       - name: Upload release assets
         uses: csexton/release-asset-action@v2
