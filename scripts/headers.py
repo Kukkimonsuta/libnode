@@ -6,7 +6,7 @@ import subprocess
 
 from . import config
 
-os.chdir('node-{}'.format(config.nodeVersion))
+os.chdir('node-{}'.format(config.version))
 
 
 env = os.environ.copy()

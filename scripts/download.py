@@ -8,7 +8,7 @@ import subprocess
 from . import config
 
 
-url = 'https://nodejs.org/dist/{}/node-{}.tar.gz'.format(config.nodeVersion, config.nodeVersion)
+url = 'https://nodejs.org/dist/{}/node-{}.tar.gz'.format(config.version, config.version)
 
 print('Downloading...')
 urllib.request.urlretrieve(url, filename="node_src.tar.gz")

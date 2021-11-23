@@ -6,7 +6,7 @@ import sys
 from . import config
 
 zipBasename = 'libnode-{}-{}-{}{}'.format(
-    config.nodeVersion,
+    config.version,
     sys.platform,
     config.architecture,
     config.zipBasenameSuffix

@@ -8,7 +8,7 @@ import glob
 
 from . import config
 
-nodeSrcFolder = 'node-{}'.format(config.nodeVersion)
+nodeSrcFolder = 'node-{}'.format(config.version)
 resultFolder = 'libnode'
 
 libFolder = os.path.join(resultFolder, 'lib')

@@ -7,7 +7,7 @@ import shutil
 
 from . import config
 
-os.chdir('node-{}'.format(config.nodeVersion))
+os.chdir('node-{}'.format(config.version))
 
 configureArgvs = [ '--shared' ] + config.options
 
