@@ -38,4 +38,3 @@ for test in tests:
 
 if failed:
     exit(1)
-
