@@ -19,19 +19,19 @@ os.mkdir(resultFolder)
 os.mkdir(libFolder)
 
 if sys.platform == 'win32':
-    for libFile in os.scandir(nodeSrcFolder + '\\out\\Release' if config.configuration == 'release' else '\\out\\Debug'):
+    for libFile in os.scandir(nodeSrcFolder + ('\\out\\Release' if config.configuration == 'release' else '\\out\\Debug')):
         if libFile.is_file() and (libFile.name.endswith('.dll') or libFile.name.endswith('.lib') or libFile.name.endswith('.exe') or libFile.name.endswith('.pdb')):
             print('Copying', libFile.name)
             shutil.copy(libFile.path, libFolder)
 elif sys.platform == 'darwin':
-    for libFile in os.scandir(nodeSrcFolder + '/out/Release' if config.configuration == 'release' else '/out/Debug'):
+    for libFile in os.scandir(nodeSrcFolder + ('/out/Release' if config.configuration == 'release' else '/out/Debug')):
         if libFile.is_file():
             print('Copying', libFile.name)
             shutil.copy(libFile.path, libFolder)
             print('Striping', libFile.name)
             subprocess.check_call(['strip', '-x', os.path.join(libFolder, libFile.name)])
 elif sys.platform == 'linux':
-    for libFile in os.scandir(nodeSrcFolder + '/out/Release' if config.configuration == 'release' else '/out/Debug'):
+    for libFile in os.scandir(nodeSrcFolder + ('/out/Release' if config.configuration == 'release' else '/out/Debug')):
         if libFile.is_file():
             print('Copying', libFile.name)
             shutil.copy(libFile.path, libFolder)
