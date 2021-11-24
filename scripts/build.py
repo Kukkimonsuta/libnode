@@ -16,7 +16,7 @@ if sys.platform == 'win32':
     env['config_flags'] = ' '.join(configureArgvs)
     
     subprocess.check_call(
-        ['cmd', '/c', 'vcbuild.bat', config.configuration] + ([] if config.architecture == 'x64' else [config.architecture]),
+        ['cmd', '/c', 'vcbuild.bat'] + (['debug'] if config.configuration == 'debug' else []) + ([] if config.architecture == 'x64' else [config.architecture]),
         env=env
     )
 else:
