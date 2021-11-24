@@ -5,12 +5,14 @@ import sys
 
 from . import config
 
-zipFileName = 'libnode-{}-{}-{}-{}'.format(
+zipFileName = 'libnode-{}-{}-{}'.format(
     config.version,
     sys.platform,
-    config.architecture,
-    config.configuration
+    config.architecture
 )
+
+if (config.configuration != 'release'):
+    zipFileName += '-' + config.configuration
 
 shutil.make_archive(zipFileName, 'zip', base_dir='libnode')
 
